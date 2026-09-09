@@ -45,7 +45,7 @@ jobs:
         # Chceš hlídat jiný film nebo jiný typ sálu? Přepiš tyhle dvě hodnoty
         # a smaž state/seen.json (jinak se nový výběr porovná se starým stavem).
         env:
-          FILM_PATTERN: odyss
+          FILM_PATTERN: dun
           AUDITORIUM_PATTERN: imax
         run: |
           python3 watch.py \
