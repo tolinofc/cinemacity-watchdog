@@ -1,17 +1,10 @@
 name: Cinema City watchdog
 
-# Zkontroluje rozpis Cinema City a když přibudou termíny Odyssei v IMAXu,
-# založí issue (GitHub z něj pošle e-mail i push do appky).
-#
-# Naplánováno 4× za hodinu, i když cílem je detekce do ~30 minut: GitHub
-# u scheduled workflows běhy pod zátěží houfně zahazuje (naměřeno 1 z 8).
-# Přebývající běhy nic nestojí (veřejné repo) a nic nerozbijí — hlášení se
-# odvíjí od stavu v state/seen.json, ne od času, takže běh navíc jen zjistí,
-# že se nic nezměnilo, a mlčí. Minuty schválně mimo :00 a :30 a rozprostřené,
-# ať netrefí stejnou špičku.
+# Zkontroluje rozpis Cinema City a když přibudou termíny vybraného filmu v IMAXu, založí issue
+
 on:
   schedule:
-    - cron: "4,14,24,34,44,54 * * * *"
+    - cron: "8,23,38,53 * * * *"
   workflow_dispatch:
     inputs:
       force_report:
@@ -19,7 +12,6 @@ on:
         type: boolean
         default: false
 
-# Stav se commituje zpátky do repa — souběžné běhy by si přepsaly commit.
 concurrency:
   group: watchdog
   cancel-in-progress: false
@@ -41,8 +33,6 @@ jobs:
 
       - name: Zkontrolovat rozpis
         id: watch
-        # Chceš hlídat jiný film nebo jiný typ sálu? Přepiš tyhle dvě hodnoty
-        # a smaž state/seen.json (jinak se nový výběr porovná se starým stavem).
         env:
           FILM_PATTERN: dun
           AUDITORIUM_PATTERN: imax
@@ -58,17 +48,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Přiřazení vlastníkovi je klíčové: GitHub posílá e-mail defaultně jen
-          # u "Participating" notifikací (přiřazení, zmínky). Pouhé "Watching"
-          # repa dává jen web/mobile notifikaci, e-mail je tam vypnutý.
           url=$(gh issue create \
             --title "$(cat title.txt)" \
             --body-file report.md \
             --assignee "${{ github.repository_owner }}")
           echo "Založeno: $url"
-          # Issue je jen doručovací kanál pro notifikaci — e-mail odejde už při
-          # založení, takže ho rovnou zavíráme a seznam otevřených zůstává
-          # prázdný. Obsah zůstane čitelný mezi zavřenými issues.
           gh issue close "$url" --reason completed
 
       - name: Uložit stav zpátky do repa
@@ -82,7 +66,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add state/seen.json
           git commit -m "Aktualizace stavu rozpisu ($(date -u '+%Y-%m-%d %H:%M UTC'))"
-          # Mezitím mohl doběhnout jiný commit — zkusíme rebase a push znovu.
           for i in 1 2 3; do
             git pull --rebase --quiet origin "${GITHUB_REF_NAME}" && git push && exit 0
             sleep 5
