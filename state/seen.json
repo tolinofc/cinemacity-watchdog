@@ -1,5 +1,5 @@
 {
- "updated": "2026-09-11T15:31:21",
+ "updated": "2026-09-11T17:02:05",
  "events": {
   "248952": {
    "id": "248952",
@@ -45,6 +45,29 @@
     "subbed"
    ],
    "booking": "https://tickets.cinemacity.cz/order/248958",
+   "soldOut": false
+  },
+  "249034": {
+   "id": "249034",
+   "film": "Duna: část třetí",
+   "filmLink": "https://www.cinemacity.cz/films/duna-cast-treti/8105s2r",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-15T20:40:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "70-mm",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "original-lang-en",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/249034",
    "soldOut": false
   }
  }
