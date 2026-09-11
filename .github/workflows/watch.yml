@@ -4,7 +4,7 @@ name: Cinema City watchdog
 
 on:
   schedule:
-    - cron: "8,23,38,53 * * * *"
+    - cron: "11,41 1-6 * * *"
   workflow_dispatch:
     inputs:
       force_report:
