@@ -1,12 +1,4 @@
 #!/usr/bin/env python3
-"""Hlídá rozpis Cinema City a hlásí nově vypsaná představení.
-
-Ve výchozím nastavení: film "Odyssea" v sále, jehož název obsahuje "IMAX".
-Data bere z veřejného JSON API cinemacity.cz (bez klíče, bez přihlášení).
-
-Stav (už viděná představení) drží v JSON souboru, takže při každém běhu
-hlásí jen to, co přibylo od minule.
-"""
 
 import argparse
 import json
@@ -18,7 +10,7 @@ import urllib.request
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
-SITE_ID = "10101"  # cinemacity.cz
+SITE_ID = "10101"
 BASE = f"https://www.cinemacity.cz/cz/data-api-service/v1/quickbook/{SITE_ID}"
 LANG = "cs_CZ"
 UA = (
@@ -26,20 +18,13 @@ UA = (
     "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
 )
 
-FILM_PATTERN = os.environ.get("FILM_PATTERN", "odyss").lower()
+FILM_PATTERN = os.environ.get("FILM_PATTERN", "dun").lower()
 AUDITORIUM_PATTERN = os.environ.get("AUDITORIUM_PATTERN", "imax").lower()
 HORIZON_DAYS = int(os.environ.get("HORIZON_DAYS", "180"))
-# Atribut, podle kterého API umí filtrovat kina — levná nápověda, kde hledat
-# IMAX sály. Doplňuje (nenahrazuje) sondu podle názvu sálu.
 HINT_ATTR = os.environ.get("HINT_ATTR", "70-mm")
 DELAY = float(os.environ.get("REQUEST_DELAY", "0.25"))
 
 CZ_DAYS = ["po", "út", "st", "čt", "pá", "so", "ne"]
-
-# API vrací eventDateTime bez zóny, v místním čase kina. Runner v GitHub
-# Actions jede v UTC, takže by se čas představení porovnával s časem o dvě
-# hodiny pozadu — projekce, která právě doběhla, by vypadala jako budoucí
-# a při zmizení z rozpisu by se falešně nahlásila jako zrušená.
 CINEMA_TZ = ZoneInfo("Europe/Prague")
 
 
@@ -97,12 +82,6 @@ def is_target_hall(event):
 
 
 def collect():
-    """Projde relevantní kina a vrátí {event_id: záznam} pro hlídaná představení.
-
-    Aby se netahal celý rozpis všech kin, běží to dvoufázově: nejdřív se
-    zjistí, která kina vůbec mají hlídaný sál (jedna sonda na kino + nápověda
-    z API), a teprve ta se projdou do hloubky.
-    """
     cinemas = fetch_cinemas()
     dates_by_cinema = {cid: fetch_dates(cid) for cid in cinemas}
 
@@ -135,14 +114,6 @@ def collect():
                     "datetime": e["eventDateTime"],
                     "auditorium": e.get("auditorium"),
                     "attrs": e.get("attributeIds", []),
-                    # Žádné z polí, která API nabízí, není použitelné jako
-                    # odkaz: bookingLink vrací na GET 404, obsoleteBookingUrl
-                    # je i podle názvu mrtvý a bookingRouterLaunchLink vede na
-                    # stránku se samoodesílacím POST formulářem, jehož cíl
-                    # (tickets.rel.…) na přímý GET odpoví 403. Ten POST ale
-                    # skončí na prosté adrese /order/{id}, která funguje i na
-                    # GET a otevře rovnou výběr sedadel. Pozor, parametr lang
-                    # tady dělá 404 — musí se vynechat.
                     "booking": f"https://tickets.cinemacity.cz/order/{e.get('presentationCode') or e['id']}",
                     "soldOut": bool(e.get("soldOut")),
                 }
@@ -158,14 +129,6 @@ def load_state(path):
 
 
 def save_state(path, events):
-    """Zapíše stav, ale jen když se změnila množina představení.
-
-    Kdyby se soubor přepisoval při každém běhu, měnilo by se v něm razítko
-    "updated" a workflow by si po sobě commitoval prázdnou změnu 48× denně.
-    Rozhoduje proto seznam ID — to je přesně to, na čem stojí hlášení.
-    Volatilní pole (soldOut) se tím pádem neaktualizují; drží se hodnota
-    z chvíle, kdy se představení objevilo poprvé, což je i to, co se hlásí.
-    """
     if set(events) == set(load_state(path).get("events", {})):
         return False
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
@@ -307,7 +270,7 @@ def main():
         return
 
     body = render(new_events, gone)
-    title = title_for(new_events) if new_events else "🎬 Odyssea v IMAXu: zrušené termíny"
+    title = title_for(new_events) if new_events else "🎬❌ Zrušené termíny"
     with open(args.report, "w", encoding="utf-8") as fh:
         fh.write(body + "\n")
     with open(args.title, "w", encoding="utf-8") as fh:
