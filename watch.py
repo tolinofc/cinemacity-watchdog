@@ -23,6 +23,9 @@ AUDITORIUM_PATTERN = os.environ.get("AUDITORIUM_PATTERN", "imax").lower()
 HORIZON_DAYS = int(os.environ.get("HORIZON_DAYS", "180"))
 HINT_ATTR = os.environ.get("HINT_ATTR", "70-mm")
 DELAY = float(os.environ.get("REQUEST_DELAY", "0.25"))
+TICKETS_BASE = "https://tickets.cinemacity.cz/api"
+AVAILABILITY_CHECK = os.environ.get("AVAILABILITY_CHECK", "1") != "0"
+MIN_FREED_SEATS = int(os.environ.get("MIN_FREED_SEATS", "1"))
 
 CZ_DAYS = ["po", "út", "st", "čt", "pá", "so", "ne"]
 CINEMA_TZ = ZoneInfo("Europe/Prague")
@@ -116,8 +119,81 @@ def collect():
                     "attrs": e.get("attributeIds", []),
                     "booking": f"https://tickets.cinemacity.cz/order/{e.get('presentationCode') or e['id']}",
                     "soldOut": bool(e.get("soldOut")),
+                    "presentationCode": e.get("presentationCode") or e["id"],
+                    "availabilityRatio": e.get("availabilityRatio"),
                 }
     return found
+
+
+_capacity_cache = {}
+
+
+def tickets_api(path, method="GET"):
+    """Volání veřejných (nechráněných) endpointů tickets.cinemacity.cz."""
+    url = f"{TICKETS_BASE}{path}"
+    last = None
+    for attempt in range(4):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": UA}, method=method)
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            last = exc
+            time.sleep(2 ** attempt)
+    raise RuntimeError(f"tickets API selhalo po 4 pokusech: {url}\n{last}")
+
+
+def seatplan_capacity(venue_id, seatplan_id):
+    """Celkový počet sedadel v sále podle veřejného plánu sálu."""
+    key = (venue_id, seatplan_id)
+    if key not in _capacity_cache:
+        body = tickets_api(
+            f"/seats/seatplanV2?venueId={venue_id}&seatplanId={seatplan_id}", method="POST"
+        )
+        _capacity_cache[key] = sum(
+            len(row.get("S", {}))
+            for section in body.get("S", {}).values()
+            for group in section.get("G", {}).values()
+            for row in group.get("R", {}).values()
+        )
+    return _capacity_cache[key]
+
+
+def enrich_availability(event, known_event=None):
+    """Doplní capacity a freeSeats. Kapacita se bere ze stavu, ať se nevolá pořád.
+
+    Fail-soft: když se něco nepovede, event zůstane s ratio a hlídání poběží dál.
+    """
+    ratio = event.get("availabilityRatio")
+    if ratio is None:
+        return
+    capacity = (known_event or {}).get("capacity")
+    try:
+        if not capacity:
+            time.sleep(DELAY)
+            presentation = tickets_api(
+                f"/presentations/{event['presentationCode']}?referralMiniSiteId=0"
+            )["presentation"]
+            time.sleep(DELAY)
+            capacity = seatplan_capacity(presentation["venueId"], presentation["seatplanId"])
+        if capacity:
+            event["capacity"] = capacity
+            event["freeSeats"] = round(ratio * capacity)
+    except Exception as exc:
+        print(f"Odhad volných míst selhal u {event['id']}: {exc}")
+
+
+def seats_gained(old, new):
+    """O kolik míst přibylo oproti minulému běhu (None = nejde určit)."""
+    old_free, new_free = old.get("freeSeats"), new.get("freeSeats")
+    if old_free is not None and new_free is not None:
+        return new_free - old_free
+    old_ratio, new_ratio = old.get("availabilityRatio"), new.get("availabilityRatio")
+    if old_ratio is not None and new_ratio is not None:
+        return 1 if new_ratio - old_ratio > 0.002 else 0
+    if "soldOut" in old:
+        return 1 if old["soldOut"] and not new["soldOut"] else 0
+    return None
 
 
 def load_state(path):
@@ -129,7 +205,7 @@ def load_state(path):
 
 
 def save_state(path, events):
-    if set(events) == set(load_state(path).get("events", {})):
+    if events == load_state(path).get("events", {}):
         return False
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     payload = {
@@ -158,9 +234,22 @@ def fmt_short(iso):
     return f"{dt.day}. {dt.month}."
 
 
-def render(new_events, gone_events):
+def render(new_events, gone_events, freed_events=()):
     """Markdown tělo hlášení."""
     lines = []
+    if freed_events:
+        lines.append(f"### Uvolnila se místa ({len(freed_events)})\n")
+        for cinema, group in group_by_cinema(freed_events):
+            lines.append(f"**{cinema}**\n")
+            for e in group:
+                if e.get("freeSeats") is not None and e.get("was") is not None:
+                    detail = f" — ~{e['freeSeats']} volných (bylo ~{e['was']}, +{e['gained']})"
+                else:
+                    detail = " — přibyla volná místa"
+                link = f" — [koupit]({e['booking']})" if e["booking"] else ""
+                lines.append(f"- {fmt_dt(e['datetime'])} · {e['auditorium']}{detail}{link}")
+            lines.append("")
+        lines.append("_Jde o odhad z podílu volných míst; počítá i místa pro ZTP, takže to nemusí být běžná sedadla._\n")
     if new_events:
         lines.append(f"### Nově vypsáno ({len(new_events)})\n")
         for cinema, group in group_by_cinema(new_events):
@@ -175,6 +264,8 @@ def render(new_events, gone_events):
                     flags.append("dabing")
                 if e["soldOut"]:
                     flags.append("**vyprodáno**")
+                elif e.get("freeSeats") is not None:
+                    flags.append(f"~{e['freeSeats']} volných")
                 suffix = f" — {', '.join(flags)}" if flags else ""
                 link = f" — [koupit]({e['booking']})" if e["booking"] else ""
                 lines.append(f"- {fmt_dt(e['datetime'])} · {e['auditorium']}{suffix}{link}")
@@ -187,7 +278,7 @@ def render(new_events, gone_events):
                 lines.append(f"- {fmt_dt(e['datetime'])} · {e['auditorium']}")
             lines.append("")
     film_link = next(
-        (e["filmLink"] for e in list(new_events) + list(gone_events) if e.get("filmLink")),
+        (e["filmLink"] for e in list(new_events) + list(gone_events) + list(freed_events) if e.get("filmLink")),
         None,
     )
     if film_link:
@@ -218,6 +309,15 @@ def title_for(new_events):
     return f"🎬 {film} v IMAXu: {n} {word} ({span})"
 
 
+def title_for_freed(freed_events):
+    film = freed_events[0]["film"]
+    days = sorted({e["datetime"][:10] for e in freed_events})
+    span = fmt_short(days[0])
+    if len(days) > 1:
+        span += f"–{fmt_short(days[-1])}"
+    return f"🎟️ {film} v IMAXu: uvolněná místa ({span})"
+
+
 def gh_output(**kwargs):
     path = os.environ.get("GITHUB_OUTPUT")
     if not path:
@@ -240,6 +340,10 @@ def main():
     state = load_state(args.state)
     known = state.get("events", {})
 
+    if AVAILABILITY_CHECK:
+        for k, e in current.items():
+            enrich_availability(e, known.get(k))
+
     print(f"Nalezeno {len(current)} hlídaných představení, ve stavu {len(known)}.")
 
     if args.seed:
@@ -251,11 +355,21 @@ def main():
     if args.force_report:
         new_events = sorted(current.values(), key=lambda e: e["datetime"])
         gone = []
+        freed = []
     else:
         new_events = sorted(
             (v for k, v in current.items() if k not in known),
             key=lambda e: e["datetime"],
         )
+        freed = []
+        for k, v in current.items():
+            old = known.get(k)
+            if not old:
+                continue
+            gained = seats_gained(old, v)
+            if gained is not None and gained >= MIN_FREED_SEATS:
+                freed.append({**v, "gained": gained, "was": old.get("freeSeats")})
+        freed.sort(key=lambda e: e["datetime"])
         future = now().isoformat()
         gone = sorted(
             (v for k, v in known.items() if k not in current and v["datetime"] > future),
@@ -264,13 +378,20 @@ def main():
 
     save_state(args.state, prune_past(current))
 
-    if not new_events and not gone:
+    if not new_events and not gone and not freed:
         print("Nic nového.")
         gh_output(has_news="false")
         return
 
-    body = render(new_events, gone)
-    title = title_for(new_events) if new_events else "🎬❌ Zrušené termíny"
+    body = render(new_events, gone, freed)
+    if freed:
+        title = title_for_freed(freed)
+        if new_events:
+            title += f" + {len(new_events)} nových termínů"
+    elif new_events:
+        title = title_for(new_events)
+    else:
+        title = "🎬❌ Zrušené termíny"
     with open(args.report, "w", encoding="utf-8") as fh:
         fh.write(body + "\n")
     with open(args.title, "w", encoding="utf-8") as fh:
