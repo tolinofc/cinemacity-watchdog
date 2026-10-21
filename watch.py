@@ -249,7 +249,6 @@ def render(new_events, gone_events, freed_events=()):
                 link = f" — [koupit]({e['booking']})" if e["booking"] else ""
                 lines.append(f"- {fmt_dt(e['datetime'])} · {e['auditorium']}{detail}{link}")
             lines.append("")
-        lines.append("_Jde o odhad z podílu volných míst; počítá i místa pro ZTP, takže to nemusí být běžná sedadla._\n")
     if new_events:
         lines.append(f"### Nově vypsáno ({len(new_events)})\n")
         for cinema, group in group_by_cinema(new_events):
