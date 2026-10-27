@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-27T23:31:43",
+ "updated": "2026-10-28T00:01:34",
  "events": {
   "248952": {
    "id": "248952",
@@ -101,9 +101,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267892",
    "soldOut": false,
    "presentationCode": "267892",
-   "availabilityRatio": 0.1896,
+   "availabilityRatio": 0.1844,
    "capacity": 385,
-   "freeSeats": 73
+   "freeSeats": 71
   },
   "267900": {
    "id": "267900",
@@ -439,9 +439,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267916",
    "soldOut": false,
    "presentationCode": "267916",
-   "availabilityRatio": 0.1584,
+   "availabilityRatio": 0.1558,
    "capacity": 385,
-   "freeSeats": 61
+   "freeSeats": 60
   },
   "267922": {
    "id": "267922",
