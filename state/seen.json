@@ -1,6 +1,266 @@
 {
- "updated": "2026-11-06T20:31:41",
+ "updated": "2026-11-25T10:51:13",
  "events": {
+  "280340": {
+   "id": "280340",
+   "film": "Duna",
+   "filmLink": "https://www.cinemacity.cz/films/duna/6377s2r1",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-03T17:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "3d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280340",
+   "soldOut": false,
+   "presentationCode": "280340",
+   "availabilityRatio": 0.5195,
+   "capacity": 385,
+   "freeSeats": 200
+  },
+  "280345": {
+   "id": "280345",
+   "film": "Duna: Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/duna-cast-druha/6377s2r2",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-03T20:20:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280345",
+   "soldOut": false,
+   "presentationCode": "280345",
+   "availabilityRatio": 0.5792,
+   "capacity": 385,
+   "freeSeats": 223
+  },
+  "280331": {
+   "id": "280331",
+   "film": "Maraton: Duna: Část první & Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/maraton-duna-cast-prvni-cast-druha/6377s2r3",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-04T18:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280331",
+   "soldOut": false,
+   "presentationCode": "280331",
+   "availabilityRatio": 0.1325,
+   "capacity": 385,
+   "freeSeats": 51
+  },
+  "280341": {
+   "id": "280341",
+   "film": "Maraton: Duna: Část první & Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/maraton-duna-cast-prvni-cast-druha/6377s2r3",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-05T18:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280341",
+   "soldOut": false,
+   "presentationCode": "280341",
+   "availabilityRatio": 0.1558,
+   "capacity": 385,
+   "freeSeats": 60
+  },
+  "280344": {
+   "id": "280344",
+   "film": "Duna",
+   "filmLink": "https://www.cinemacity.cz/films/duna/6377s2r1",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-06T17:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "3d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280344",
+   "soldOut": false,
+   "presentationCode": "280344",
+   "availabilityRatio": 0.4675,
+   "capacity": 385,
+   "freeSeats": 180
+  },
+  "280346": {
+   "id": "280346",
+   "film": "Duna: Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/duna-cast-druha/6377s2r2",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-06T20:20:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280346",
+   "soldOut": false,
+   "presentationCode": "280346",
+   "availabilityRatio": 0.574,
+   "capacity": 385,
+   "freeSeats": 221
+  },
+  "280342": {
+   "id": "280342",
+   "film": "Duna",
+   "filmLink": "https://www.cinemacity.cz/films/duna/6377s2r1",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-08T17:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "3d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280342",
+   "soldOut": false,
+   "presentationCode": "280342",
+   "availabilityRatio": 0.626,
+   "capacity": 385,
+   "freeSeats": 241
+  },
+  "280348": {
+   "id": "280348",
+   "film": "Duna: Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/duna-cast-druha/6377s2r2",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-08T20:20:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280348",
+   "soldOut": false,
+   "presentationCode": "280348",
+   "availabilityRatio": 0.5974,
+   "capacity": 385,
+   "freeSeats": 230
+  },
+  "280343": {
+   "id": "280343",
+   "film": "Duna",
+   "filmLink": "https://www.cinemacity.cz/films/duna/6377s2r1",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-09T17:00:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "3d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280343",
+   "soldOut": false,
+   "presentationCode": "280343",
+   "availabilityRatio": 0.7455,
+   "capacity": 385,
+   "freeSeats": 287
+  },
+  "280349": {
+   "id": "280349",
+   "film": "Duna: Část druhá",
+   "filmLink": "https://www.cinemacity.cz/films/duna-cast-druha/6377s2r2",
+   "cinema": "Praha Flora, OC FLORA",
+   "cinemaId": "1052",
+   "datetime": "2026-12-09T20:20:00",
+   "auditorium": "IMAX VOLVO",
+   "attrs": [
+    "12-plus",
+    "2d",
+    "action",
+    "adventure",
+    "drama",
+    "first-subbed-lang-cs",
+    "imax",
+    "sci-fi",
+    "subbed"
+   ],
+   "booking": "https://tickets.cinemacity.cz/order/280349",
+   "soldOut": false,
+   "presentationCode": "280349",
+   "availabilityRatio": 0.5818,
+   "capacity": 385,
+   "freeSeats": 224
+  },
   "248952": {
    "id": "248952",
    "film": "Duna: část třetí",
@@ -75,9 +335,9 @@
    "booking": "https://tickets.cinemacity.cz/order/249034",
    "soldOut": false,
    "presentationCode": "249034",
-   "availabilityRatio": 0.0338,
+   "availabilityRatio": 0.0208,
    "capacity": 385,
-   "freeSeats": 13
+   "freeSeats": 8
   },
   "267892": {
    "id": "267892",
@@ -101,9 +361,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267892",
    "soldOut": false,
    "presentationCode": "267892",
-   "availabilityRatio": 0.0909,
+   "availabilityRatio": 0.0623,
    "capacity": 385,
-   "freeSeats": 35
+   "freeSeats": 24
   },
   "267900": {
    "id": "267900",
@@ -127,9 +387,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267900",
    "soldOut": false,
    "presentationCode": "267900",
-   "availabilityRatio": 0.0935,
+   "availabilityRatio": 0.0519,
    "capacity": 385,
-   "freeSeats": 36
+   "freeSeats": 20
   },
   "267902": {
    "id": "267902",
@@ -153,9 +413,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267902",
    "soldOut": false,
    "presentationCode": "267902",
-   "availabilityRatio": 0.1247,
+   "availabilityRatio": 0.0675,
    "capacity": 385,
-   "freeSeats": 48
+   "freeSeats": 26
   },
   "267904": {
    "id": "267904",
@@ -179,9 +439,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267904",
    "soldOut": false,
    "presentationCode": "267904",
-   "availabilityRatio": 0.0753,
+   "availabilityRatio": 0.0519,
    "capacity": 385,
-   "freeSeats": 29
+   "freeSeats": 20
   },
   "267905": {
    "id": "267905",
@@ -205,9 +465,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267905",
    "soldOut": false,
    "presentationCode": "267905",
-   "availabilityRatio": 0.0961,
+   "availabilityRatio": 0.0442,
    "capacity": 385,
-   "freeSeats": 37
+   "freeSeats": 17
   },
   "267906": {
    "id": "267906",
@@ -231,9 +491,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267906",
    "soldOut": false,
    "presentationCode": "267906",
-   "availabilityRatio": 0.1403,
+   "availabilityRatio": 0.0883,
    "capacity": 385,
-   "freeSeats": 54
+   "freeSeats": 34
   },
   "267908": {
    "id": "267908",
@@ -257,9 +517,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267908",
    "soldOut": false,
    "presentationCode": "267908",
-   "availabilityRatio": 0.1299,
+   "availabilityRatio": 0.0805,
    "capacity": 385,
-   "freeSeats": 50
+   "freeSeats": 31
   },
   "267909": {
    "id": "267909",
@@ -283,9 +543,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267909",
    "soldOut": false,
    "presentationCode": "267909",
-   "availabilityRatio": 0.0987,
+   "availabilityRatio": 0.0468,
    "capacity": 385,
-   "freeSeats": 38
+   "freeSeats": 18
   },
   "267910": {
    "id": "267910",
@@ -309,9 +569,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267910",
    "soldOut": false,
    "presentationCode": "267910",
-   "availabilityRatio": 0.0987,
+   "availabilityRatio": 0.0494,
    "capacity": 385,
-   "freeSeats": 38
+   "freeSeats": 19
   },
   "267911": {
    "id": "267911",
@@ -335,9 +595,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267911",
    "soldOut": false,
    "presentationCode": "267911",
-   "availabilityRatio": 0.1195,
+   "availabilityRatio": 0.0597,
    "capacity": 385,
-   "freeSeats": 46
+   "freeSeats": 23
   },
   "267913": {
    "id": "267913",
@@ -361,9 +621,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267913",
    "soldOut": false,
    "presentationCode": "267913",
-   "availabilityRatio": 0.0935,
+   "availabilityRatio": 0.0442,
    "capacity": 385,
-   "freeSeats": 36
+   "freeSeats": 17
   },
   "267914": {
    "id": "267914",
@@ -387,9 +647,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267914",
    "soldOut": false,
    "presentationCode": "267914",
-   "availabilityRatio": 0.0701,
+   "availabilityRatio": 0.0364,
    "capacity": 385,
-   "freeSeats": 27
+   "freeSeats": 14
   },
   "267915": {
    "id": "267915",
@@ -413,9 +673,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267915",
    "soldOut": false,
    "presentationCode": "267915",
-   "availabilityRatio": 0.0935,
+   "availabilityRatio": 0.0545,
    "capacity": 385,
-   "freeSeats": 36
+   "freeSeats": 21
   },
   "267916": {
    "id": "267916",
@@ -439,9 +699,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267916",
    "soldOut": false,
    "presentationCode": "267916",
-   "availabilityRatio": 0.1091,
+   "availabilityRatio": 0.0649,
    "capacity": 385,
-   "freeSeats": 42
+   "freeSeats": 25
   },
   "267922": {
    "id": "267922",
@@ -465,9 +725,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267922",
    "soldOut": false,
    "presentationCode": "267922",
-   "availabilityRatio": 0.0987,
+   "availabilityRatio": 0.0727,
    "capacity": 385,
-   "freeSeats": 38
+   "freeSeats": 28
   },
   "267926": {
    "id": "267926",
@@ -491,9 +751,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267926",
    "soldOut": false,
    "presentationCode": "267926",
-   "availabilityRatio": 0.1013,
+   "availabilityRatio": 0.0545,
    "capacity": 385,
-   "freeSeats": 39
+   "freeSeats": 21
   },
   "267928": {
    "id": "267928",
@@ -517,9 +777,9 @@
    "booking": "https://tickets.cinemacity.cz/order/267928",
    "soldOut": false,
    "presentationCode": "267928",
-   "availabilityRatio": 0.1091,
+   "availabilityRatio": 0.0623,
    "capacity": 385,
-   "freeSeats": 42
+   "freeSeats": 24
   }
  }
 }
