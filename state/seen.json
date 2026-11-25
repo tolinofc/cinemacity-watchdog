@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T14:01:46",
+ "updated": "2026-11-25T14:31:52",
  "events": {
   "280340": {
    "id": "280340",
@@ -75,9 +75,9 @@
    "booking": "https://tickets.cinemacity.cz/order/280331",
    "soldOut": false,
    "presentationCode": "280331",
-   "availabilityRatio": 0.1247,
+   "availabilityRatio": 0.1273,
    "capacity": 385,
-   "freeSeats": 48
+   "freeSeats": 49
   },
   "280341": {
    "id": "280341",
